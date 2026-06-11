@@ -221,7 +221,7 @@ namespace dsn
                 }
                 else
                 {
-                    di.error = ::dsn::ERR_OK.to_string();
+                    di.error = ::dsn::ERR_OK;
                     di.status = service_status::SS_PREPARE_RESOURCE;
                     _services.insert(
                         std::unordered_map<std::string, std::shared_ptr< ::dsn::dist::deployment_unit> >::value_type(
