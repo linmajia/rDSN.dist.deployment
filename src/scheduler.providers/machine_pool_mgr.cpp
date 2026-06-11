@@ -54,14 +54,17 @@ namespace dsn
 
             sort(candidates.begin(), candidates.end());
             assign_list.clear();
-            do {
-                for (size_t i = 0; i < candidates.size() && assign_list.size() < opt.slot_count; i++)
-                {
-                    assign_list.push_back(candidates[i].identity);
-                }
-            } while (opt.allow_same_machine_slots && assign_list.size() < opt.slot_count);
+            if (!candidates.empty())
+            {
+                do {
+                    for (size_t i = 0; i < candidates.size() && assign_list.size() < (size_t)opt.slot_count; i++)
+                    {
+                        assign_list.push_back(candidates[i].identity);
+                    }
+                } while (opt.allow_same_machine_slots && assign_list.size() < (size_t)opt.slot_count);
+            }
 
-            if (!opt.allow_partial_allocation && assign_list.size() < opt.slot_count)
+            if (!opt.allow_partial_allocation && assign_list.size() < (size_t)opt.slot_count)
             {
                 assign_list.clear();
                 return ERR_RESOURCE_NOT_ENOUGH;

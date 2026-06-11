@@ -58,7 +58,11 @@ public:
 
     virtual ::dsn::error_code stop(bool cleanup = false)
     {
-        _timer->cancel(true);
+        if (_timer != nullptr)
+        {
+            _timer->cancel(true);
+            _timer = nullptr;
+        }
  
         if (_deploy_svc_client != nullptr)
         {
@@ -138,7 +142,7 @@ public:
 
     virtual ::dsn::error_code start(int argc, char** argv)
     {
-        if (argc < 2)
+        if (argc < 3)
             return ::dsn::ERR_INVALID_PARAMETERS;
 
         _server.assign_ipv4(argv[1], (uint16_t)atoi(argv[2]));

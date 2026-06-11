@@ -177,8 +177,11 @@ void kubernetes_cluster_scheduler::create_pod(std::string& name,std::function<vo
         }
         {
             zauto_lock l(_lock);
-            auto unit = _deploy_map[name];
-            unit->service_url = service_url;
+            auto it = _deploy_map.find(name);
+            if (it != _deploy_map.end())
+            {
+                it->second->service_url = service_url;
+            }
         }
 #endif
         deployment_callback(ERR_OK,rpc_address());
