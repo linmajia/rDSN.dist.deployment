@@ -1,5 +1,6 @@
 
 # include "deploy_svc.server.impl.h"
+# include "process_utils.h"
 # include <dsn/utility/factory_store.h>
 
 namespace dsn
@@ -254,9 +255,16 @@ namespace dsn
                     this,
                     [this, svc, ldir, file](error_code err, size_t sz)
                 {
-                    std::string command = "7z x " + ldir + '/' + file + " -y -o" + ldir;
-                // decompress when completed
-                    system(command.c_str());
+                    if (err == ::dsn::ERR_OK)
+                    {
+                        std::string archive = ldir + '/' + file;
+                        int extract_ret = run_process({ "7z", "x", archive, "-y", "-o" + ldir });
+                        if (extract_ret != 0)
+                        {
+                            derror("failed to extract package %s to %s, exit code = %d", archive.c_str(), ldir.c_str(), extract_ret);
+                            err = ::dsn::ERR_FILE_OPERATION_FAILED;
+                        }
+                    }
                     this->download_service_resource_completed(err, svc);
                 }
                 );

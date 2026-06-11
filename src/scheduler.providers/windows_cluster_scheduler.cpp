@@ -34,6 +34,7 @@
 
 #include "windows_cluster_scheduler.h"
 #include "windows_cluster_error.h"
+#include "process_utils.h"
 #include <fstream>
 
 namespace dsn
@@ -120,16 +121,10 @@ namespace dsn
 
         void windows_cluster_scheduler::run_apps(std::string& name, std::function<void(error_code, rpc_address)>& deployment_callback, std::string& local_package_directory, std::string& remote_package_directory)
         {
-            int ret;
-            std::ostringstream command;
-            command << "..\\run_windows.cmd deploy_and_start ";
-            command << local_package_directory;
-            if (remote_package_directory == "")
-                command << " " << dsn::utils::filesystem::path_combine(_default_remote_package_directory, name);
-            else
-                command << " " << remote_package_directory;
-            printf("%s\n", command.str().c_str());
-            ret = system(command.str().c_str());
+            std::string target_directory = remote_package_directory == "" ?
+                dsn::utils::filesystem::path_combine(_default_remote_package_directory, name) :
+                remote_package_directory;
+            int ret = run_process({ "..\\run_windows.cmd", "deploy_and_start", local_package_directory, target_directory });
 
             if (ret == 0)
             {
@@ -143,16 +138,10 @@ namespace dsn
 
         void windows_cluster_scheduler::stop_apps(std::string& name, std::function<void(error_code, const std::string&)>& deployment_callback, std::string& local_package_directory, std::string& remote_package_directory)
         {
-            int ret;
-            std::ostringstream command;
-            command << "..\\run_windows.cmd stop_and_cleanup ";
-            command << local_package_directory;
-            if (remote_package_directory == "")
-                command << " " << dsn::utils::filesystem::path_combine(_default_remote_package_directory, name);
-            else
-                command << " " << remote_package_directory;
-
-            ret = system(command.str().c_str());
+            std::string target_directory = remote_package_directory == "" ?
+                dsn::utils::filesystem::path_combine(_default_remote_package_directory, name) :
+                remote_package_directory;
+            int ret = run_process({ "..\\run_windows.cmd", "stop_and_cleanup", local_package_directory, target_directory });
 
             if (ret == 0)
             {
