@@ -35,6 +35,7 @@
 
 # include "docker_scheduler.h"
 # include "docker_error.h"
+# include "process_utils.h"
 # include <stdlib.h>
 # include <fstream>
 
@@ -104,34 +105,24 @@ error_code docker_scheduler::initialize()
     dinfo("run path is %s",_run_path.c_str());
 #ifndef _WIN32    
     int ret;
-    FILE *in;
-    ret = system("docker version");
+    ret = run_process({ "docker", "version" });
     if (ret != 0)
     {
         dinfo("docker is not in the PATH");
         return ::dsn::dist::ERR_DOCKER_BINARY_NOT_FOUND;
     }
-    in = popen("service docker status","r");
-    if (in == nullptr)
+    std::string status_output;
+    ret = read_process_output({ "service", "docker", "status" }, status_output);
+    if (ret != 0)
     {
         dinfo("docker daemon is not running");
         return ::dsn::dist::ERR_DOCKER_DAEMON_NOT_FOUND;
     }
-    else
+    if (status_output.find("docker start/running") == std::string::npos)
     {
-        char buff[512];
-        while( fgets(buff,sizeof(buff),in) != nullptr)
-        {
-            constexpr const char substr[] = "docker start/running";
-            constexpr size_t length = sizeof(substr) - 1;
-            if( strncmp(substr,buff,length) != 0 )
-            {
-                dinfo("docker daemon is not running");
-                return ::dsn::dist::ERR_DOCKER_DAEMON_NOT_FOUND;
-            }
-        }
+        dinfo("docker daemon is not running");
+        return ::dsn::dist::ERR_DOCKER_DAEMON_NOT_FOUND;
     }
-    pclose(in);
 #endif
     
     dassert(_docker_deploy_handle == nullptr, "docker deploy is initialized twice");
@@ -146,14 +137,11 @@ error_code docker_scheduler::initialize()
 
 void docker_scheduler::get_app_list(std::string& ldir,/*out*/std::vector<std::string>& app_list )
 {
-    //TODO : 1. Use std file stream instead of command and
-    //       2. buffer size set to be 128?
 #ifndef _WIN32
-    std::string popen_command = "cat " + ldir + "/applist";
-    FILE *f = popen(popen_command.c_str(),"r");
-    char buffer[128];
-    dassert(fgets(buffer,128,f) == buffer, "");
-    ::dsn::utils::split_args(buffer, app_list, ' ');
+    std::ifstream in((ldir + "/applist").c_str());
+    std::string apps;
+    dassert(static_cast<bool>(std::getline(in, apps)), "");
+    ::dsn::utils::split_args(apps.c_str(), app_list, ' ');
 #endif
 }
 
@@ -229,28 +217,40 @@ void docker_scheduler::schedule(
 
 void docker_scheduler::create_containers(std::string& name,std::function<void(error_code, rpc_address)>& deployment_callback, std::string& local_package_directory, std::string& remote_package_directory)
 {
-    int ret;
-    std::ostringstream command;
-    command << "./run_docker.sh deploy_and_start ";
-    command << " -d " << name << " -s " << local_package_directory;
-    if( remote_package_directory == "" )
-        command << " -t " << local_package_directory;
-    else
-        command << " -t " << remote_package_directory;
-    ret = system(command.str().c_str());
+    int ret = run_process({
+        "./run_docker.sh",
+        "deploy_and_start",
+        "-d",
+        name,
+        "-s",
+        local_package_directory,
+        "-t",
+        remote_package_directory == "" ? local_package_directory : remote_package_directory
+    });
     if( ret == 0 )
     {
 #ifndef _WIN32
-        std::string popen_command = "IP=`cat "+ local_package_directory +"/metalist`;echo ${IP#*@}";
-        FILE *f = popen(popen_command.c_str(),"r");
-        char buffer[30];
-        dassert(fgets(buffer,30,f) == buffer, "");
+        std::ifstream in((local_package_directory + "/metalist").c_str());
+        std::string service_url;
+        if (!std::getline(in, service_url))
+        {
+            zauto_lock l(_lock);
+            return_machines(name);
+            _machine_map.erase(name);
+            _deploy_map.erase(name);
+            deployment_callback(::dsn::dist::ERR_DOCKER_DEPLOY_FAILED, rpc_address());
+            return;
+        }
+        auto at_pos = service_url.find('@');
+        if (at_pos != std::string::npos)
+        {
+            service_url = service_url.substr(at_pos + 1);
+        }
         {
             zauto_lock l(_lock);
             auto unit = _deploy_map[name];
-            unit->service_url = buffer;
+            unit->service_url = service_url;
         }
-        pclose(f);
 #endif
         deployment_callback(ERR_OK,rpc_address());
     }
@@ -296,19 +296,16 @@ void docker_scheduler::unschedule(
 
 void docker_scheduler::delete_containers(std::string& name,std::function<void(error_code, const std::string&)>& undeployment_callback, std::string& local_package_directory, std::string& remote_package_directory)
 {
-    int ret;
-    std::ostringstream command;
-    command << "./run_docker.sh stop_and_clean ";
-    command << " -d " << name << " -s " << local_package_directory;
-    if (remote_package_directory == "")
-    {
-        command << " -t " << local_package_directory;
-    }
-    else
-    {
-        command << " -t " << remote_package_directory;
-    }
-    ret = system(command.str().c_str());
+    int ret = run_process({
+        "./run_docker.sh",
+        "stop_and_clean",
+        "-d",
+        name,
+        "-s",
+        local_package_directory,
+        "-t",
+        remote_package_directory == "" ? local_package_directory : remote_package_directory
+    });
 
     // TODO: deal with this error or notice the dev server
     dassert( ret == 0, "docker can't delete pods");
@@ -321,4 +318,3 @@ void docker_scheduler::delete_containers(std::string& name,std::function<void(er
 
 }
 }
-

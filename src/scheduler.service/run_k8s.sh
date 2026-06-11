@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd $DSN_ROOT/..
-./run.sh $*
+cd "$DSN_ROOT/.."
+./run.sh "$@"
