@@ -44,7 +44,7 @@ namespace dist
 {
 kubernetes_cluster_scheduler::kubernetes_cluster_scheduler()
     :_run_path(""),
-     _k8s_state_handle(nullptr),
+     // _k8s_state_handle(nullptr),
      _k8s_deploy_handle(nullptr),
      _k8s_undeploy_handle(nullptr)
 {

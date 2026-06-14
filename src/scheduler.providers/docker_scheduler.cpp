@@ -45,7 +45,7 @@ namespace dist
 {
 docker_scheduler::docker_scheduler()
     :_run_path(""),
-     _docker_state_handle(nullptr),
+     // _docker_state_handle(nullptr),
      _docker_deploy_handle(nullptr),
      _docker_undeploy_handle(nullptr),
      _mgr("docker")
