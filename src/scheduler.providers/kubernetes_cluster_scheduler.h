@@ -75,7 +75,7 @@ namespace dsn
             void delete_pod(std::string& name,std::function<void(error_code, const std::string&)>& undeployment_callback, std::string& local_package_directory);
             using deploy_map = std::unordered_map<std::string, std::shared_ptr<deployment_unit> >;
             std::string                 _run_path;
-            dsn_handle_t                _k8s_state_handle;
+            // dsn_handle_t                _k8s_state_handle;
             dsn_handle_t                _k8s_deploy_handle;
             dsn_handle_t                _k8s_undeploy_handle;
             deploy_map                  _deploy_map;

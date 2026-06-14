@@ -132,6 +132,7 @@ namespace dsn
 
         public:
             
+            virtual ~cluster_scheduler() {}
 
         public:
             /*

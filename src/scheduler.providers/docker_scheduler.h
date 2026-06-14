@@ -59,7 +59,7 @@ namespace dsn
 
             void unschedule(
                     std::shared_ptr<deployment_unit>& unit
-                    );
+                    ) override;
             virtual cluster_type::type type() const override
             {
                 return cluster_type::cstype_docker;
@@ -79,7 +79,7 @@ namespace dsn
             using deploy_map = std::unordered_map<std::string, std::shared_ptr<deployment_unit> >;
             using machine_map = std::unordered_map<std::string, std::vector<std::string> >;
             std::string                 _run_path;
-            dsn_handle_t                _docker_state_handle;
+            // dsn_handle_t                _docker_state_handle;
             dsn_handle_t                _docker_deploy_handle;
             dsn_handle_t                _docker_undeploy_handle;
             deploy_map                  _deploy_map;
