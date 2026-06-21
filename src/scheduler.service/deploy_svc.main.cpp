@@ -7,9 +7,12 @@ void dsn_app_registration_deploy_svc()
 {
     dsn::dist::register_cluster_scheduler_providers();
     // register all possible service apps
-    dsn::register_app< ::dsn::dist::deploy_svc_server_app>("server");
-    dsn::register_app< ::dsn::dist::deploy_svc_client_app>("client");
-    dsn::register_app< ::dsn::dist::deploy_svc_perf_test_client_app>("client.perf.deploy_svc");
+    dassert(dsn::register_app< ::dsn::dist::deploy_svc_server_app>("server"),
+            "register server app failed");
+    dassert(dsn::register_app< ::dsn::dist::deploy_svc_client_app>("client"),
+            "register client app failed");
+    dassert(dsn::register_app< ::dsn::dist::deploy_svc_perf_test_client_app>("client.perf.deploy_svc"),
+            "register client.perf.deploy_svc app failed");
 }
 
 # ifndef DSN_RUN_USE_SVCHOST
