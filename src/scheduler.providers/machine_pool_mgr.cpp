@@ -103,7 +103,11 @@ namespace dsn
             {
                     machine_id.push_back(std::string(str));
             }
-            fclose(fd);
+            if (fclose(fd) != 0)
+            {
+                derror("failed to close machines file");
+                return ERR_FILE_OPERATION_FAILED;
+            }
             return ERR_OK;
         }
     }

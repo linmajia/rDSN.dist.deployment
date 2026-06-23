@@ -184,7 +184,11 @@ namespace dsn
             {
                 app_list.push_back(std::string(str));
             }
-            fclose(fd);
+            if (fclose(fd) != 0)
+            {
+                derror("failed to close apps file");
+                return ERR_FILE_OPERATION_FAILED;
+            }
 
             /* allocate machine */
             error_code err = ERR_OK;

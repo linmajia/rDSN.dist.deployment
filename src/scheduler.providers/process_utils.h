@@ -103,8 +103,8 @@ inline int read_process_output(const std::vector<std::string>& args, std::string
     int action_error = posix_spawn_file_actions_init(&actions);
     if (action_error != 0)
     {
-        close(pipe_fd[0]);
-        close(pipe_fd[1]);
+        ::close(pipe_fd[0]);
+        ::close(pipe_fd[1]);
         return action_error;
     }
 
@@ -120,8 +120,8 @@ inline int read_process_output(const std::vector<std::string>& args, std::string
     if (action_error != 0)
     {
         posix_spawn_file_actions_destroy(&actions);
-        close(pipe_fd[0]);
-        close(pipe_fd[1]);
+        ::close(pipe_fd[0]);
+        ::close(pipe_fd[1]);
         return action_error;
     }
 
@@ -137,12 +137,17 @@ inline int read_process_output(const std::vector<std::string>& args, std::string
     posix_spawn_file_actions_destroy(&actions);
     if (spawn_error != 0)
     {
-        close(pipe_fd[0]);
-        close(pipe_fd[1]);
+        ::close(pipe_fd[0]);
+        ::close(pipe_fd[1]);
         return spawn_error;
     }
 
-    close(pipe_fd[1]);
+    if (::close(pipe_fd[1]) != 0)
+    {
+        int close_error = errno;
+        ::close(pipe_fd[0]);
+        return close_error;
+    }
 
     char buffer[256];
     int read_error = 0;
@@ -164,7 +169,10 @@ inline int read_process_output(const std::vector<std::string>& args, std::string
         }
     }
 
-    close(pipe_fd[0]);
+    if (::close(pipe_fd[0]) != 0 && read_error == 0)
+    {
+        read_error = errno;
+    }
 
     int status = 0;
     while (waitpid(pid, &status, 0) == -1)

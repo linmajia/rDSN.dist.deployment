@@ -2,6 +2,8 @@
 # include "deploy_svc.client.h"
 # include "deploy_svc.client.perf.h"
 # include "deploy_svc.server.impl.h"
+# include <cstdint>
+# include <dsn/cpp/utils.h>
 
 namespace dsn { namespace dist { 
 // server app example
@@ -48,9 +50,17 @@ public:
     virtual ::dsn::error_code start(int argc, char** argv)
     {
         if (argc < 3)
+        {
             return ::dsn::ERR_INVALID_PARAMETERS;
+        }
 
-        _server.assign_ipv4(argv[1], (uint16_t)atoi(argv[2]));
+        uint16_t port = 0;
+        if (!::dsn::utils::lexical_cast_integer<uint16_t>(argv[2], port))
+        {
+            return ::dsn::ERR_INVALID_PARAMETERS;
+        }
+
+        _server.assign_ipv4(argv[1], port);
         _deploy_svc_client = new deploy_svc_client(_server);
         _timer = ::dsn::tasking::enqueue_timer(LPC_DEPLOY_SVC_TEST_TIMER, this, [this] {on_test_timer();}, std::chrono::seconds(1));
         return ::dsn::ERR_OK;
@@ -143,9 +153,17 @@ public:
     virtual ::dsn::error_code start(int argc, char** argv)
     {
         if (argc < 3)
+        {
             return ::dsn::ERR_INVALID_PARAMETERS;
+        }
 
-        _server.assign_ipv4(argv[1], (uint16_t)atoi(argv[2]));
+        uint16_t port = 0;
+        if (!::dsn::utils::lexical_cast_integer<uint16_t>(argv[2], port))
+        {
+            return ::dsn::ERR_INVALID_PARAMETERS;
+        }
+
+        _server.assign_ipv4(argv[1], port);
 
         _deploy_svc_client = new deploy_svc_perf_test_client(_server);
         _deploy_svc_client->start_test("deploy_svc.perf-test.case", 0);
