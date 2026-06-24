@@ -45,9 +45,9 @@ namespace dsn
             :_mgr("windows")
         {
             _default_remote_package_directory = dsn_config_get_value_string(
-                "windows", 
-                "remote_package_directory", 
-                "C:\\rdsn\\packages", 
+                "windows",
+                "remote_package_directory",
+                "C:\\rdsn\\packages",
                 "the location of deployed packages"
             );
         }
@@ -89,7 +89,7 @@ namespace dsn
                 unit->deployment_callback(err, rpc_address());
             }
             else
-            { 
+            {
                 dsn::tasking::enqueue(LPC_WIN_CREATE, this, [this, unit]() {
                     run_apps(unit->name, unit->deployment_callback, unit->local_package_directory, unit->remote_package_directory);
                 });

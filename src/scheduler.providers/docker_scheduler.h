@@ -2,8 +2,8 @@
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Microsoft Corporation
- * 
- * -=- Robust Distributed System Nucleus (rDSN) -=- 
+ *
+ * -=- Robust Distributed System Nucleus (rDSN) -=-
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@ namespace dsn
     {
         DEFINE_TASK_CODE(LPC_DOCKER_CREATE,TASK_PRIORITY_COMMON,THREAD_POOL_SCHEDULER_LONG)
         DEFINE_TASK_CODE(LPC_DOCKER_DELETE,TASK_PRIORITY_COMMON,THREAD_POOL_SCHEDULER_LONG)
-        class docker_scheduler 
+        class docker_scheduler
             : public cluster_scheduler, public clientlet
         {
         public:

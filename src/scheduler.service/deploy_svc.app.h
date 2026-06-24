@@ -5,9 +5,9 @@
 # include <cstdint>
 # include <dsn/cpp/utils.h>
 
-namespace dsn { namespace dist { 
+namespace dsn { namespace dist {
 // server app example
-class deploy_svc_server_app : 
+class deploy_svc_server_app :
     public ::dsn::service_app
 {
 public:
@@ -31,8 +31,8 @@ private:
 };
 
 // client app example
-class deploy_svc_client_app : 
-    public ::dsn::service_app, 
+class deploy_svc_client_app :
+    public ::dsn::service_app,
     public virtual ::dsn::clientlet
 {
 public:
@@ -41,8 +41,8 @@ public:
     {
         _deploy_svc_client = nullptr;
     }
-    
-    ~deploy_svc_client_app() 
+
+    ~deploy_svc_client_app()
     {
         stop();
     }
@@ -73,7 +73,7 @@ public:
             _timer->cancel(true);
             _timer = nullptr;
         }
- 
+
         if (_deploy_svc_client != nullptr)
         {
             delete _deploy_svc_client;
@@ -89,53 +89,53 @@ public:
             //sync:
             auto result = _deploy_svc_client->deploy_sync({});
             std::cout << "call RPC_DEPLOY_SVC_DEPLOY_SVC_DEPLOY end, return " << result.first.to_string() << std::endl;
-            //async: 
+            //async:
             //_deploy_svc_client->begin_deploy(req);
-           
+
         }
         {
             //sync:
             auto result = _deploy_svc_client->undeploy_sync({});
             std::cout << "call RPC_DEPLOY_SVC_DEPLOY_SVC_UNDEPLOY end, return " << result.first.to_string() << std::endl;
-            //async: 
+            //async:
             //_deploy_svc_client->begin_undeploy(req);
-           
+
         }
         {
             //sync:
             auto result = _deploy_svc_client->get_service_list_sync({});
             std::cout << "call RPC_DEPLOY_SVC_DEPLOY_SVC_GET_SERVICE_LIST end, return " << result.first.to_string() << std::endl;
-            //async: 
+            //async:
             //_deploy_svc_client->begin_get_service_list(req);
-           
+
         }
         {
             //sync:
             auto result = _deploy_svc_client->get_service_info_sync({});
             std::cout << "call RPC_DEPLOY_SVC_DEPLOY_SVC_GET_SERVICE_INFO end, return " << result.first.to_string() << std::endl;
-            //async: 
+            //async:
             //_deploy_svc_client->begin_get_service_info(req);
-           
+
         }
         {
             //sync:
             auto result = _deploy_svc_client->get_cluster_list_sync({});
             std::cout << "call RPC_DEPLOY_SVC_DEPLOY_SVC_GET_CLUSTER_LIST end, return " << result.first.to_string() << std::endl;
-            //async: 
+            //async:
             //_deploy_svc_client->begin_get_cluster_list(req);
-           
+
         }
     }
 
 private:
     ::dsn::task_ptr _timer;
     ::dsn::rpc_address _server;
-    
+
     deploy_svc_client *_deploy_svc_client;
 };
 
 class deploy_svc_perf_test_client_app :
-    public ::dsn::service_app, 
+    public ::dsn::service_app,
     public virtual ::dsn::clientlet
 {
 public:
@@ -179,10 +179,10 @@ public:
         }
         return ERR_OK;
     }
-    
+
 private:
     deploy_svc_perf_test_client *_deploy_svc_client;
     ::dsn::rpc_address _server;
 };
 
-} } 
+} }

@@ -2,8 +2,8 @@
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Microsoft Corporation
- * 
- * -=- Robust Distributed System Nucleus (rDSN) -=- 
+ *
+ * -=- Robust Distributed System Nucleus (rDSN) -=-
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -131,7 +131,7 @@ namespace dsn
             typedef cluster_scheduler* (*factory)();
 
         public:
-            
+
             virtual ~cluster_scheduler() {}
 
         public:
@@ -143,7 +143,7 @@ namespace dsn
             virtual void schedule(
                 std::shared_ptr<deployment_unit>& unit
                 ) = 0;
-            
+
             virtual void unschedule(
                 std::shared_ptr<deployment_unit>& unit
                 ) = 0;

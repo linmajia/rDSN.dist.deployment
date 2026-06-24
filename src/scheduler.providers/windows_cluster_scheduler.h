@@ -75,20 +75,20 @@ namespace dsn
             std::string                 _default_remote_package_directory;
 
             void run_apps(
-                std::string& name, 
-                std::function<void(error_code, rpc_address)>& deployment_callback, 
+                std::string& name,
+                std::function<void(error_code, rpc_address)>& deployment_callback,
                 std::string& local_package_directory, std::string& remote_package_directory
                 );
 
             void stop_apps(
-                std::string& name, 
-                std::function<void(error_code, const std::string&)>& deployment_callback, 
+                std::string& name,
+                std::function<void(error_code, const std::string&)>& deployment_callback,
                 std::string& local_package_directory, std::string& remote_package_directory
                 );
-            
+
             error_code allocate_machine(
-                std::string& name, 
-                std::string& ldir, 
+                std::string& name,
+                std::string& ldir,
                 /* out */ std::vector<std::string>& assign_list,
                 /* out */ std::string& service_url
                 );

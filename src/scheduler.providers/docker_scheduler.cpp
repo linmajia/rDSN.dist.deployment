@@ -2,8 +2,8 @@
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Microsoft Corporation
- * 
- * -=- Robust Distributed System Nucleus (rDSN) -=- 
+ *
+ * -=- Robust Distributed System Nucleus (rDSN) -=-
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -99,11 +99,11 @@ void docker_scheduler::undeploy_docker_unit_cleanup(dsn_cli_reply reply)
 
 }
 error_code docker_scheduler::initialize()
-{ 
+{
     _run_path = dsn_config_get_value_string("apps.client","run_path","","");
     dassert( _run_path != "", "run path is empty");
     dinfo("run path is %s",_run_path.c_str());
-#ifndef _WIN32    
+#ifndef _WIN32
     int ret;
     ret = run_process({ "docker", "version" });
     if (ret != 0)
@@ -124,7 +124,7 @@ error_code docker_scheduler::initialize()
         return ::dsn::dist::ERR_DOCKER_DAEMON_NOT_FOUND;
     }
 #endif
-    
+
     dassert(_docker_deploy_handle == nullptr, "docker deploy is initialized twice");
     _docker_deploy_handle = dsn_cli_app_register("deploy","deploy onto docker scheduler","",this,&deploy_docker_unit,&deploy_docker_unit_cleanup);
     dassert(_docker_deploy_handle != nullptr, "register cli handler failed");
@@ -212,7 +212,7 @@ void docker_scheduler::schedule(
             create_containers(unit->name, unit->deployment_callback, unit->local_package_directory, unit->remote_package_directory);
         });
     }
-    
+
 }
 
 void docker_scheduler::create_containers(std::string& name,std::function<void(error_code, rpc_address)>& deployment_callback, std::string& local_package_directory, std::string& remote_package_directory)
@@ -274,11 +274,11 @@ void docker_scheduler::unschedule(
         )
 {
     bool found = false;
-    
+
     _lock.lock();
     auto it = _deploy_map.find(unit->name);
     found = (it != _deploy_map.end());
-    
+
     if( found )
     {
         return_machines(unit->name);
@@ -314,7 +314,7 @@ void docker_scheduler::delete_containers(std::string& name,std::function<void(er
     dassert( ret == 0, "docker can't delete pods");
 
     // ret == 0
-    undeployment_callback(::dsn::ERR_OK,std::string()); 
+    undeployment_callback(::dsn::ERR_OK,std::string());
 }
 
 

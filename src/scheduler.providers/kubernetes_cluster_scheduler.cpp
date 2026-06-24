@@ -2,8 +2,8 @@
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Microsoft Corporation
- * 
- * -=- Robust Distributed System Nucleus (rDSN) -=- 
+ *
+ * -=- Robust Distributed System Nucleus (rDSN) -=-
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,7 @@ kubernetes_cluster_scheduler::kubernetes_cluster_scheduler()
      _k8s_deploy_handle(nullptr),
      _k8s_undeploy_handle(nullptr)
 {
-    
+
 }
 
 void kubernetes_cluster_scheduler::deploy_k8s_unit(void* context, int argc, const char** argv, dsn_cli_reply* reply)
@@ -95,8 +95,8 @@ void kubernetes_cluster_scheduler::undeploy_k8s_unit_cleanup(dsn_cli_reply reply
 
 }
 error_code kubernetes_cluster_scheduler::initialize()
-{ 
-#ifndef _WIN32    
+{
+#ifndef _WIN32
     int ret;
     ret = run_process({ "kubectl", "version" });
     if (ret != 0)
@@ -111,7 +111,7 @@ error_code kubernetes_cluster_scheduler::initialize()
         return ::dsn::dist::ERR_K8S_CLUSTER_NOT_FOUND;
     }
 #endif
-    
+
     dassert(_k8s_deploy_handle == nullptr, "k8s deploy is initialized twice");
     _k8s_deploy_handle = dsn_cli_app_register("deploy","deploy onto k8s scheduler","",this,&deploy_k8s_unit,&deploy_k8s_unit_cleanup);
     dassert(_k8s_deploy_handle != nullptr, "register cli handler failed");
@@ -147,7 +147,7 @@ void kubernetes_cluster_scheduler::schedule(
             create_pod(unit->name, unit->deployment_callback, unit->local_package_directory);
         });
     }
-    
+
 }
 
 void kubernetes_cluster_scheduler::create_pod(std::string& name,std::function<void(error_code, rpc_address)>& deployment_callback, std::string& local_package_directory)
@@ -201,11 +201,11 @@ void kubernetes_cluster_scheduler::unschedule(
         )
 {
     bool found = false;
-    
+
     _lock.lock();
     auto it = _deploy_map.find(unit->name);
     found = (it != _deploy_map.end());
-    
+
     if( found )
     {
         _deploy_map.erase(it);
@@ -228,7 +228,7 @@ void kubernetes_cluster_scheduler::delete_pod(std::string& name,std::function<vo
     dassert( ret == 0, "k8s can't delete pods");
 
     // ret == 0
-    undeployment_callback(::dsn::ERR_OK,std::string()); 
+    undeployment_callback(::dsn::ERR_OK,std::string());
 }
 
 

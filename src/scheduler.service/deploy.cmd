@@ -63,16 +63,16 @@ GOTO exit
     ECHO  source-dir is a directory which contains a start.cmd, machines.txt, and other resource files/dirs
     ECHO  or, a directory which contains a set of directories above which will be deployed simultaneously.
     ECHO  Example: "run deploy .\skv\meta d:\zhenyug" deploys meta to d:\zhenyug\meta
-    ECHO  Example: "run deploy .\skv d:\zhenyug" deploys skv\meta, skv\replica, ... to d:\zhenyug\meta, replica, ...    
+    ECHO  Example: "run deploy .\skv d:\zhenyug" deploys skv\meta, skv\replica, ... to d:\zhenyug\meta, replica, ...
     GOTO:EOF
 
-REM  
+REM
 REM |-source-dir|target-dir
 REM   - start.cmd
 REM   - machines.txt
 REM   - other dependent files or dirs
-REM 
+REM
 
-    
+
 :exit
 

@@ -22,7 +22,7 @@ set(MY_SRC_SEARCH_MODE "GLOB")
 
 set(MY_PROJ_INC_PATH ${RAPIDJSON_INCLUDE_DIR} "../scheduler.providers")
 
-set(MY_PROJ_LIBS 
+set(MY_PROJ_LIBS
     "dsn.dist.scheduler.providers")
 
 
@@ -42,6 +42,6 @@ set(MY_BINPLACES ${RES_FILES})
 
 dsn_add_executable()
 
-add_custom_target( docker 
+add_custom_target( docker
     COMMAND docker build -t "${MY_PROJ_NAME}-image" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${MY_PROJ_NAME}")
 add_dependencies( docker "${MY_PROJ_NAME}")
