@@ -2,8 +2,8 @@
 # include "deploy_svc.code.definition.h"
 # include <iostream>
 
-namespace dsn { namespace dist { 
-class deploy_svc_service 
+namespace dsn { namespace dist {
+class deploy_svc_service
     : public ::dsn::serverlet<deploy_svc_service>
 {
 public:
@@ -12,42 +12,42 @@ public:
 
 protected:
     // all service handlers to be implemented further
-    // RPC_DEPLOY_SVC_DEPLOY_SVC_DEPLOY 
+    // RPC_DEPLOY_SVC_DEPLOY_SVC_DEPLOY
     virtual void on_deploy(const deploy_request& args, ::dsn::rpc_replier<deploy_info>& reply)
     {
         std::cout << "... exec RPC_DEPLOY_SVC_DEPLOY_SVC_DEPLOY ... (not implemented) " << std::endl;
         deploy_info resp;
         reply(resp);
     }
-    // RPC_DEPLOY_SVC_DEPLOY_SVC_UNDEPLOY 
+    // RPC_DEPLOY_SVC_DEPLOY_SVC_UNDEPLOY
     virtual void on_undeploy(const std::string& args, ::dsn::rpc_replier< ::dsn::error_code>& reply)
     {
         std::cout << "... exec RPC_DEPLOY_SVC_DEPLOY_SVC_UNDEPLOY ... (not implemented) " << std::endl;
         ::dsn::error_code resp;
         reply(resp);
     }
-    // RPC_DEPLOY_SVC_DEPLOY_SVC_GET_SERVICE_LIST 
+    // RPC_DEPLOY_SVC_DEPLOY_SVC_GET_SERVICE_LIST
     virtual void on_get_service_list(const std::string& args, ::dsn::rpc_replier<deploy_info_list>& reply)
     {
         std::cout << "... exec RPC_DEPLOY_SVC_DEPLOY_SVC_GET_SERVICE_LIST ... (not implemented) " << std::endl;
         deploy_info_list resp;
         reply(resp);
     }
-    // RPC_DEPLOY_SVC_DEPLOY_SVC_GET_SERVICE_INFO 
+    // RPC_DEPLOY_SVC_DEPLOY_SVC_GET_SERVICE_INFO
     virtual void on_get_service_info(const std::string& args, ::dsn::rpc_replier<deploy_info>& reply)
     {
         std::cout << "... exec RPC_DEPLOY_SVC_DEPLOY_SVC_GET_SERVICE_INFO ... (not implemented) " << std::endl;
         deploy_info resp;
         reply(resp);
     }
-    // RPC_DEPLOY_SVC_DEPLOY_SVC_GET_CLUSTER_LIST 
+    // RPC_DEPLOY_SVC_DEPLOY_SVC_GET_CLUSTER_LIST
     virtual void on_get_cluster_list(const std::string& args, ::dsn::rpc_replier<cluster_list>& reply)
     {
         std::cout << "... exec RPC_DEPLOY_SVC_DEPLOY_SVC_GET_CLUSTER_LIST ... (not implemented) " << std::endl;
         cluster_list resp;
         reply(resp);
     }
-    
+
 public:
     void open_service(dsn_gpid gpid)
     {
@@ -68,4 +68,4 @@ public:
     }
 };
 
-} } 
+} }

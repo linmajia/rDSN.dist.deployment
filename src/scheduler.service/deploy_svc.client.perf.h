@@ -2,7 +2,7 @@
 
 # include "deploy_svc.client.h"
 
-namespace dsn { namespace dist { 
+namespace dsn { namespace dist {
 class deploy_svc_perf_test_client
     : public deploy_svc_client,
       public ::dsn::service::perf_client_helper
@@ -110,4 +110,4 @@ public:
     }
 };
 
-} } 
+} }
