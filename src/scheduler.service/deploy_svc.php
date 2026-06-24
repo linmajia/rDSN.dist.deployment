@@ -1,4 +1,4 @@
-<?php 
+<?php
 $_PROG = new t_program("deploy_svc");
 
 $_PROG->namespaces["cpp"] = "dsn.dist";

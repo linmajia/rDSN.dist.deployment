@@ -72,12 +72,12 @@ service deploy_svc
     //
     // service deployments
     //
-    deploy_info deploy(1:deploy_request req);    
+    deploy_info deploy(1:deploy_request req);
     // return error code
-    dsn.error_code undeploy(1:string service_url);    
+    dsn.error_code undeploy(1:string service_url);
     deploy_info_list get_service_list(1:string app_type);
-    deploy_info get_service_info(1:string service_url);    
-    
+    deploy_info get_service_info(1:string service_url);
+
     //
     // cluster information
     //

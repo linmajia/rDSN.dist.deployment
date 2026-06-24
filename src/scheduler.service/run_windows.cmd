@@ -11,7 +11,7 @@ if "%1" EQU "deploy_and_start" (
         )
         GOTO:exit
     )
-    
+
 if "%1%" EQU "stop_and_cleanup" (
         CALL %~dp0\deploy.cmd stop %2 %3 %4 %5 %6 %7 %8 %9
         if NOT ERRORLEVEL 0 (

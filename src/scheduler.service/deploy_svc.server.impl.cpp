@@ -26,7 +26,7 @@ namespace dsn
                 return s;
             }
         }
-        
+
         DEFINE_THREAD_POOL_CODE(THREAD_POOL_DEPLOY_LONG)
 
         DEFINE_TASK_CODE_AIO(LPC_DEPLOY_DOWNLOAD_RESOURCE, TASK_PRIORITY_COMMON, THREAD_POOL_DEPLOY_LONG)
@@ -270,7 +270,7 @@ namespace dsn
                 );
             }
         }
-        
+
         void deploy_svc_service_impl::on_deploy(const deploy_request& req, ::dsn::rpc_replier<deploy_info>& reply)
         {
             deploy_info di;
@@ -310,7 +310,7 @@ namespace dsn
                 err = ::dsn::ERR_SERVICE_NOT_FOUND;
             }
         }
-        
+
         void deploy_svc_service_impl::on_undeploy(const std::string& service_name, ::dsn::rpc_replier<error_code>& reply)
         {
             error_code err;

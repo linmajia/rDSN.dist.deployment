@@ -22,17 +22,17 @@ GOTO exit
     ECHO  source-dir is a directory which contains a start.cmd, machines.txt, and other resource files/dirs
     GOTO:EOF
 
-REM  
+REM
 REM |-source-dir|target-dir
 REM   - start.cmd
 REM   - machines.txt
 REM   - other dependent files or dirs
-REM 
+REM
 
 :deploy
     set machine=%1
     set rdst=\\%machine%\%rdst_dir%
-    @mkdir %rdst%    
+    @mkdir %rdst%
     xcopy /F /Y /S %src_dir% %rdst%
     SCHTASKS /CREATE /S %machine% /RU SYSTEM /SC ONLOGON /TN %deploy_name% /TR "%ldst_dir%\start.cmd" /V1 /F
     GOTO:EOF
@@ -40,7 +40,7 @@ REM
 :start
     @SCHTASKS /RUN /S %1 /TN %deploy_name%
     GOTO:EOF
-    
+
 :stop
     @SCHTASKS /END /S %1 /TN %deploy_name%
     GOTO:EOF
@@ -56,7 +56,7 @@ REM
     set rdst=\\%1\%rdst_dir%
     @rmdir /Q /S %rdst%
     GOTO:EOF
-    
+
 :scds
     ECHO stop %machine% ...
     CALL :stop %machine%
@@ -66,7 +66,7 @@ REM
     CALL :deploy %machine%
     ECHO start %machine% ...
     CALL :start %machine%
-    
+
 :exit
 
 IF NOT ERRORLEVEL 0  CALL %bin_dir%\echoc.exe 4 error happens...
