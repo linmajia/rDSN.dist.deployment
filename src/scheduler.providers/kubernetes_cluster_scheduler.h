@@ -37,6 +37,9 @@
 
 # include "cluster_scheduler.h"
 # include <unordered_map>
+# include <memory>
+# include <functional>
+# include <string>
 using namespace ::dsn::service;
 
 namespace dsn

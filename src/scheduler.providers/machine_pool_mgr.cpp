@@ -1,5 +1,7 @@
 #include "machine_pool_mgr.h"
 #include <fstream>
+#include <cstdio>
+#include <set>
 
 #ifdef __TITLE__
 #undef __TITLE__

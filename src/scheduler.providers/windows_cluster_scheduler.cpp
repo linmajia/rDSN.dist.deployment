@@ -36,6 +36,10 @@
 #include "windows_cluster_error.h"
 #include "process_utils.h"
 #include <fstream>
+#include <cstdio>
+#include <memory>
+#include <functional>
+#include <sstream>
 
 namespace dsn
 {

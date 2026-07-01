@@ -1,6 +1,8 @@
 # pragma once
 
 # include "deploy_svc.client.h"
+# include <string>
+# include <vector>
 
 namespace dsn { namespace dist {
 class deploy_svc_perf_test_client

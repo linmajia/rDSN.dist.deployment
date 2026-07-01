@@ -3,6 +3,8 @@
 # include "deploy_svc.client.perf.h"
 # include "deploy_svc.server.impl.h"
 # include <cstdint>
+# include <chrono>
+# include <iostream>
 # include <dsn/cpp/utils.h>
 
 namespace dsn { namespace dist {
