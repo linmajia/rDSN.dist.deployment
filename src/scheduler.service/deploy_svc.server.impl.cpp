@@ -3,6 +3,7 @@
 # include "process_utils.h"
 # include <dsn/utility/factory_store.h>
 # include <cstring>
+# include <sstream>
 
 namespace dsn
 {

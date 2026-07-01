@@ -1,6 +1,7 @@
 # pragma once
 # include "deploy_svc.code.definition.h"
 # include <iostream>
+# include <string>
 
 namespace dsn { namespace dist {
 class deploy_svc_service

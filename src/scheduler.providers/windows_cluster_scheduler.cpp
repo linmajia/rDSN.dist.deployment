@@ -39,6 +39,7 @@
 #include <cstdio>
 #include <memory>
 #include <functional>
+#include <sstream>
 
 namespace dsn
 {

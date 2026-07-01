@@ -3,6 +3,8 @@
 # include <iostream>
 # include <cstdint>
 # include <utility>
+# include <string>
+# include <chrono>
 
 
 namespace dsn { namespace dist {
