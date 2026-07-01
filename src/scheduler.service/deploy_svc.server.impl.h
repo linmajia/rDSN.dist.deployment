@@ -5,6 +5,7 @@
 # include "cluster_scheduler.h"
 
 # include <unordered_map>
+# include <memory>
 
 namespace dsn
 {

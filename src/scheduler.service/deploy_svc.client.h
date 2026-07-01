@@ -1,6 +1,8 @@
 # pragma once
 # include "deploy_svc.code.definition.h"
 # include <iostream>
+# include <cstdint>
+# include <utility>
 
 
 namespace dsn { namespace dist {

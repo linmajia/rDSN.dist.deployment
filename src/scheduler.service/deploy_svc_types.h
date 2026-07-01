@@ -9,6 +9,7 @@
 
 #include "cluster_scheduler.h"
 #include <iosfwd>
+#include <cstdint>
 
 #include <thrift/Thrift.h>
 #include <thrift/TApplicationException.h>

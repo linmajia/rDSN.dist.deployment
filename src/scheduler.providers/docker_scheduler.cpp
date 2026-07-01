@@ -38,6 +38,9 @@
 # include "process_utils.h"
 # include <stdlib.h>
 # include <fstream>
+# include <memory>
+# include <functional>
+# include <utility>
 
 namespace dsn
 {

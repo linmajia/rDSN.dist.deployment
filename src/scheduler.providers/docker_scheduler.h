@@ -37,6 +37,8 @@
 
 # include "cluster_scheduler.h"
 # include <unordered_map>
+# include <memory>
+# include <functional>
 # include "machine_pool_mgr.h"
 using namespace ::dsn::service;
 
